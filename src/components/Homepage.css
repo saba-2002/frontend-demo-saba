@@ -1,0 +1,13 @@
+/* src/components/Homepage.css */
+.homepage {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.homepage button {
+  padding: 10px 20px;
+  background-color: #FF69B4;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
