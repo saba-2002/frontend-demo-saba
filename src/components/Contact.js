@@ -1,25 +1,36 @@
-// src/components/Contact.js
 import React, { useState } from 'react';
-import './Contact.css';
 
 const Contact = () => {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', form);
+    try {
+      const response = await fetch('http://your-backend-domain:3001/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      alert(data.message); // Show confirmation to the user
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
-    <div className="contact">
-      <h2>Contact Us</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Name" onChange={(e) => setForm({ ...form, name: e.target.value })} />
-        <input type="email" placeholder="Email" onChange={(e) => setForm({ ...form, email: e.target.value })} />
-        <textarea placeholder="Message" onChange={(e) => setForm({ ...form, message: e.target.value })} />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
+      <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+      <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Message" required />
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
