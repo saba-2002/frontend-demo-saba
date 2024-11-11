@@ -10,7 +10,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://your-backend-domain:3001/api/contact', {
+      const response = await fetch('http://44.192.117.126:3000/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
