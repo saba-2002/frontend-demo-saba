@@ -10,7 +10,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://demo-project-lb-762063345.us-east-1.elb.amazonaws.com/api/auth/login', {
+      const response = await fetch('http://44.192.117.126:3000/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
