@@ -1,25 +1,52 @@
 // src/components/Login.js
 import React, { useState } from 'react';
-import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Logged in with:', credentials);
+    try {
+      const response = await fetch('http://demo-project-lb-762063345.us-east-1.elb.amazonaws.com/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (response.ok) {
+        navigate('/'); // Redirect to homepage on successful login
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
 
   return (
-    <div className="login">
+    <div>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <input type="text" placeholder="Username" onChange={(e) => setCredentials({ ...credentials, username: e.target.value })} />
-        <input type="password" placeholder="Password" onChange={(e) => setCredentials({ ...credentials, password: e.target.value })} />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button type="submit">Login</button>
       </form>
     </div>
   );
-};
+}
 
 export default Login;
